@@ -13,9 +13,9 @@ int refreshRPMs() {
   unsigned long instantDuration = micros() - lastTransit;
   if (instantDuration > (1000L * 1000L * 3L)) {
     // too long wait, engine is not turning
-    rpms = 0;
+    runtime::rpms = 0;
   } else {
-    rpms = averageRPMs();
+    runtime::rpms = averageRPMs();
   }
 }
 

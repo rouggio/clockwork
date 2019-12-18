@@ -15,6 +15,6 @@ void refreshDisplay() {
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(10, 0);
-  display.println(rpms);
+  display.println(runtime::rpms);
   display.display();
 }
