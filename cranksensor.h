@@ -5,6 +5,10 @@
 
 void initialiseCrankSensor(int hallSensorPin);
 
-volatile CircularBuffer<unsigned long, BUFFER_SIZE> _hallSensorReads;
+namespace cranksensor {
+  
+  volatile CircularBuffer<unsigned long, BUFFER_SIZE> hallSensorReads;
+  
+}
 
 #endif

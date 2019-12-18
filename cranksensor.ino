@@ -2,7 +2,7 @@
 #include "Arduino.h"
 
   void hallSensorChange() {
-    _hallSensorReads.push(micros());  
+    cranksensor::hallSensorReads.push(micros());  
   }
     
   void initialiseCrankSensor(int hallSensorPin) {
@@ -11,7 +11,7 @@
     attachInterrupt(digitalPinToInterrupt(hallSensorPin), hallSensorChange, FALLING);
   
     for (int i = 0; i < BUFFER_SIZE; i++) {
-      _hallSensorReads.push(0);
+      cranksensor::hallSensorReads.push(0);
     }
   
   }

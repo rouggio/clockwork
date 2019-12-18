@@ -7,8 +7,8 @@ void initialiseRPMsCalculator() {
 }
 
 int refreshRPMs() {
-  unsigned long lastTransit = _hallSensorReads[BUFFER_SIZE - 1];
-  unsigned long secondLastTransit = _hallSensorReads[BUFFER_SIZE - 2];
+  unsigned long lastTransit = cranksensor::hallSensorReads[BUFFER_SIZE - 1];
+  unsigned long secondLastTransit = cranksensor::hallSensorReads[BUFFER_SIZE - 2];
   unsigned long lastKnownDuration = lastTransit - secondLastTransit;
   unsigned long instantDuration = micros() - lastTransit;
   if (instantDuration > (1000L * 1000L * 3L)) {
@@ -43,8 +43,8 @@ int averageRPMs() {
 }
 
 int computeDuration(int prevSampleIndex, int nextSampleIndex) {
-  unsigned long nextTransit = _hallSensorReads[nextSampleIndex];
-  unsigned long previousTransit = _hallSensorReads[prevSampleIndex];
+  unsigned long nextTransit = cranksensor::hallSensorReads[nextSampleIndex];
+  unsigned long previousTransit = cranksensor::hallSensorReads[prevSampleIndex];
   if (nextTransit > 0 && previousTransit > 0) {
     return nextTransit - previousTransit;
   } else {
