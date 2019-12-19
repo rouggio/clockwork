@@ -6,12 +6,17 @@
 // size of shaft sample set
 #define BUFFER_SIZE 8
 
+// display refresh rate in ms
+#define DISPLAY_REFRESH_RATE 20
+
 // modules
 #include "CrankSensor.h"
-#include "display.h"
-#include "rpm.h"
+#include "Telemetry.h"
+#include "Display.h"
 
 CrankSensor * crankSensorPtr;
+Telemetry * telemetryPtr;
+Display * displayPtr;
 
 void setup() {
   Serial.begin(9600);
@@ -23,22 +28,21 @@ void setup() {
     [](void) -> void {crankSensorPtr->sensorCallback();}
   );
 
-  // RPM calulation
-  initialiseRPMsCalculator();
+  // Initialise telemetry
+  telemetryPtr = new Telemetry(crankSensorPtr);
 
-  // display
-  initialiseDisplay();
+  // Initialise display
+  displayPtr = new Display(
+    DISPLAY_REFRESH_RATE, 
+    [](void)->void{displayPtr->refreshDisplay();},
+    telemetryPtr
+  );
   
   Serial.println("setup completed");
 }
 
 /**
- * the main loop does nothing important, just refresh the display
+ * the main loop does nothing, all activities happens in the modules
  */
 void loop() {
-  
-  refreshDisplay();
-  
-  delay(20);
-  
 }

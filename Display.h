@@ -12,14 +12,18 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-namespace display {
-  
-  Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-  
-  void refresh();  
-}
+#include <TimerOne.h>
 
-void initialiseDisplay();
-void refreshDisplay();
+class Display {
+
+  private:
+    Adafruit_SSD1306 * screenPtr;
+    Telemetry * telemetryPtr;
+
+  public:
+    Display(int refreshRate, void (*isrCallback), Telemetry* telemetryPtr);
+    void refreshDisplay();
+
+};
 
 #endif
