@@ -1,18 +1,27 @@
 // constants
+
+// pin for shaft hall sensor signal
 #define HALL_SENSOR_PIN 2
+
+// size of shaft sample set
 #define BUFFER_SIZE 8
 
 // modules
-#include "cranksensor.h"
+#include "CrankSensor.h"
 #include "display.h"
 #include "rpm.h"
+
+CrankSensor * crankSensorPtr;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("setup started");
 
-  // Crank sensor
-  initialiseCrankSensor(HALL_SENSOR_PIN);
+  // Initialise crank sensor
+  crankSensorPtr = new CrankSensor(
+    HALL_SENSOR_PIN, 
+    [](void) -> void {crankSensorPtr->sensorCallback();}
+  );
 
   // RPM calulation
   initialiseRPMsCalculator();
@@ -23,7 +32,13 @@ void setup() {
   Serial.println("setup completed");
 }
 
+/**
+ * the main loop does nothing important, just refresh the display
+ */
 void loop() {
+  
   refreshDisplay();
+  
   delay(20);
+  
 }
