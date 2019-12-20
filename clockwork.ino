@@ -1,48 +1,46 @@
 // constants
 
 // pin for shaft hall sensor signal
-#define HALL_SENSOR_PIN 2
+const int HALL_SENSOR_PIN = 2;
 
 // size of shaft sample set
-#define BUFFER_SIZE 8
+const int BUFFER_SIZE = 8;
 
 // display refresh rate in ms
-#define DISPLAY_REFRESH_RATE 20
+const unsigned long DISPLAY_REFRESH_RATE = 60;
 
 // modules
 #include "CrankSensor.h"
-#include "Telemetry.h"
 #include "Display.h"
 
 CrankSensor * crankSensorPtr;
-Telemetry * telemetryPtr;
 Display * displayPtr;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("setup started");
-
+ 
   // Initialise crank sensor
   crankSensorPtr = new CrankSensor(
     HALL_SENSOR_PIN, 
     [](void) -> void {crankSensorPtr->sensorCallback();}
   );
 
-  // Initialise telemetry
-  telemetryPtr = new Telemetry(crankSensorPtr);
-
   // Initialise display
   displayPtr = new Display(
-    DISPLAY_REFRESH_RATE, 
+    DISPLAY_REFRESH_RATE,
     [](void)->void{displayPtr->refreshDisplay();},
-    telemetryPtr
+    crankSensorPtr
   );
-  
+
   Serial.println("setup completed");
 }
 
 /**
- * the main loop does nothing, all activities happens in the modules
+ * the main loop only refreshes the display
  */
 void loop() {
+  //todo intended to be a timer but it broke the display, investigate why...
+  displayPtr->refreshDisplay();
+  delay(DISPLAY_REFRESH_RATE);
 }

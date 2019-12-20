@@ -12,18 +12,15 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#include <TimerOne.h>
-
 class Display {
 
   private:
     Adafruit_SSD1306 * screenPtr;
-    Telemetry * telemetryPtr;
+    CrankSensor * crankSensorPtr;
 
   public:
-    Display(int refreshRate, void (*isrCallback), Telemetry* telemetryPtr);
+    Display(unsigned long, void (*), CrankSensor*);
     void refreshDisplay();
-
 };
 
 #endif
