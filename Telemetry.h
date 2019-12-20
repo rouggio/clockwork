@@ -13,6 +13,7 @@ class Telemetry {
     CrankSensor* crankSensorPtr;
     volatile int rpms = 0;
     int computeDuration(int prevSampleIndex, int nextSampleIndex);
+    
 };
 
 #endif

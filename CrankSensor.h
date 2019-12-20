@@ -6,12 +6,12 @@
 class CrankSensor {
 
   private:
-    void resetBuffer();
-        
+            
   public:
     CrankSensor(int hallSensorPin, void (*isrCallback));
     volatile CircularBuffer<unsigned long, BUFFER_SIZE> hallSensorReads;
     void sensorCallback();
+    void resetBuffer();
 };
 
 #endif
