@@ -1,8 +1,6 @@
 #ifndef CRANK_SENSOR_H
 #define CRANK_SENSOR_H
 
-#include <CircularBuffer.h>
-
 /**
  * The crank sensor is responsible of:
  * 
@@ -18,9 +16,6 @@ class CrankSensor {
     
     // overall number of gear positions (teeth and gaps)
     static const unsigned int TEETH_TOTAL = TEETH_PRESENT + TEETH_MISSING;
-
-    // circular buffer size, double the amout of teeth
-    static const unsigned int BUFFER_SIZE = CrankSensor::TEETH_TOTAL * 2;
 
     // factor for one minute in microseconds
     static const unsigned long ONE_MINUTE_IN_MICROS = 60L * 1000L * 1000L;
@@ -47,19 +42,13 @@ class CrankSensor {
 
     // Methods
     
-    // resets the circular buffer entries to zeroes
-    void resetBuffer();
-
     // compares this duration against other known durations to determine whether how many gaps we are observing now.
-    int CrankSensor::durationComparison(unsigned int newDuration, unsigned int referenceDuration, unsigned int factor);
+    int durationComparison(unsigned int newDuration, unsigned int referenceDuration, unsigned int factor);
 
   public:
     
     CrankSensor(int hallSensorPin, void (*isrCallback));
-
-    // circular buffer of transition instants
-    volatile CircularBuffer<unsigned long, CrankSensor::BUFFER_SIZE> hallSensorReads;
-    
+   
     // called back from interrupt to notify the current sensor pulse
     void sensorCallback();
 

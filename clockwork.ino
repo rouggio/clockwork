@@ -1,6 +1,5 @@
-// *********
+
 // constants
-// *********
 
 // pin for shaft hall sensor signal
 const int HALL_SENSOR_PIN = 2;
@@ -9,7 +8,7 @@ const unsigned int TEETH_PRESENT = 3;
 const unsigned int TEETH_MISSING = 1;
 
 // display refresh rate in ms
-const unsigned long DISPLAY_REFRESH_RATE = 60;
+const unsigned long DISPLAY_REFRESH_RATE = 600;
 
 // modules
 #include "CrankSensor.h"
@@ -34,7 +33,7 @@ void setup() {
     [](void)->void{displayPtr->refreshDisplay();},
     crankSensorPtr
   );
-
+  
   Serial.println("setup completed");
 }
 

@@ -8,8 +8,6 @@ CrankSensor::CrankSensor(int hallSensorPin, void (*isrCallback)) {
   // Attach hardware interrupt to callback function upon falling that when the tooth transition is completed
   attachInterrupt(digitalPinToInterrupt(hallSensorPin), isrCallback, FALLING);
 
-  resetBuffer();
-
 }
 
 /**
@@ -21,7 +19,7 @@ void CrankSensor::sensorCallback() {
   unsigned long pulseInstant = micros();
   
   /* 
-   *  todo - check how we stand with the number of teeth and calculate phase
+   *  check how we stand with the number of teeth and calculate phase
    *  
    *  - calculate current duration
    *  - compare against last known duration
@@ -37,6 +35,9 @@ void CrankSensor::sensorCallback() {
 
   // approximated duration in comparison to other tooth-tooth durations
   int durationFactor = durationComparison(currentDuration, lastObservedDuration, 1);
+
+  //todo bug here!
+  Serial.println(durationFactor);
   
   if (durationFactor == 1) {
 
@@ -59,6 +60,7 @@ void CrankSensor::sensorCallback() {
   
   // store last known tooth - tooth duration
   lastObservedDuration = currentDuration;
+
 }
 
 int CrankSensor::durationComparison(unsigned int newDuration, unsigned int referenceDuration, unsigned int factor) {
@@ -79,16 +81,7 @@ int CrankSensor::durationComparison(unsigned int newDuration, unsigned int refer
     return durationComparison(newDuration, referenceDuration, factor + 1);
     
   }
-  
-}
 
-/**
- * clear all entries in the circular buffer
- */
-void CrankSensor::resetBuffer() {
-  for (int i = 0; i < BUFFER_SIZE; i++) {
-    hallSensorReads.push(0);
-  }
 }
 
 int CrankSensor::instantRpm() {
