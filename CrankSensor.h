@@ -22,6 +22,9 @@ class CrankSensor {
 
     // duration tolerance to assume two transition durations are similar
     static const float DURATION_COMPARISON_FACTOR = 1.25;
+
+    // maximum time to wait for a tooth transition, above which we consider the rpm to be zero, engine turned off, in microseconds
+    static const unsigned long MAX_TOOTH_WAIT_TIME = 1000L * 1000L * 4L;
     
     // Fields
 
@@ -29,21 +32,21 @@ class CrankSensor {
     volatile int lastSeenToothIndex = -1;
 
     // the last seen gear tooth transition time, in microseconds
-    volatile int lastSeenToothTime;
+    volatile unsigned long lastSeenToothTime = micros();
 
     // the last observed tooth-tooth duration, microseconds
-    volatile unsigned int lastObservedDuration;
+    volatile unsigned long lastObservedDuration;
 
     // time of last observed completed revolution in micros
-    volatile unsigned int lastRevTime;
+    volatile unsigned long lastRevTime;
 
     // duration of last observed revolution in micros
-    volatile unsigned int lastRevDuration;
+    volatile unsigned long lastRevDuration;
 
     // Methods
     
     // compares this duration against other known durations to determine whether how many gaps we are observing now.
-    int durationComparison(unsigned int newDuration, unsigned int referenceDuration, unsigned int factor);
+    int durationComparison(unsigned long newDuration, unsigned long referenceDuration, unsigned int factor);
 
   public:
     
@@ -53,7 +56,7 @@ class CrankSensor {
     void sensorCallback();
 
     // returns the last known rpm
-    int instantRpm();
+    unsigned long instantRpm();
 
 };
 

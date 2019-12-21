@@ -8,7 +8,7 @@ const unsigned int TEETH_PRESENT = 3;
 const unsigned int TEETH_MISSING = 1;
 
 // display refresh rate in ms
-const unsigned long DISPLAY_REFRESH_RATE = 600;
+const unsigned long DISPLAY_REFRESH_RATE = 60;
 
 // modules
 #include "CrankSensor.h"
