@@ -27,7 +27,7 @@ void Display::refreshDisplay() {
     screenPtr->setCursor(10, 0);
     screenPtr->setTextSize(2);
     screenPtr->setTextColor(SSD1306_WHITE);
-    screenPtr->println(crankSensorPtr->instantRPMs());
+    screenPtr->println(crankSensorPtr->instantRpm());
     screenPtr->display();
   }
 }

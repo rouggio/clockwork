@@ -1,10 +1,12 @@
+// *********
 // constants
+// *********
 
 // pin for shaft hall sensor signal
 const int HALL_SENSOR_PIN = 2;
 
-// size of shaft sample set
-const int BUFFER_SIZE = 8;
+const unsigned int TEETH_PRESENT = 3;
+const unsigned int TEETH_MISSING = 1;
 
 // display refresh rate in ms
 const unsigned long DISPLAY_REFRESH_RATE = 60;
