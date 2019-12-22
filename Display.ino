@@ -1,6 +1,6 @@
 #include "Display.h"
 
-Display::Display(unsigned long refreshRate, void (*isrCallback), CrankSensor* ptr) {
+Display::Display(void (*isrCallback), CrankSensor* ptr) {
 
   screenPtr = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -27,7 +27,8 @@ void Display::refreshDisplay() {
     screenPtr->setCursor(10, 0);
     screenPtr->setTextSize(2);
     screenPtr->setTextColor(SSD1306_WHITE);
-    screenPtr->println(crankSensorPtr->instantRpm());
+    screenPtr->print("RPM ");
+    screenPtr->print(crankSensorPtr->instantRpm());
     screenPtr->display();
   }
 }

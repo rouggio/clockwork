@@ -4,11 +4,11 @@
 // pin for shaft hall sensor signal
 const int HALL_SENSOR_PIN = 2;
 
-const unsigned int TEETH_PRESENT = 3;
+const unsigned int TEETH_PRESENT = 35;
 const unsigned int TEETH_MISSING = 1;
 
 // display refresh rate in ms
-const unsigned long DISPLAY_REFRESH_RATE = 60;
+const unsigned long DISPLAY_REFRESH_DELAY = 100;
 
 // modules
 #include "CrankSensor.h"
@@ -29,7 +29,6 @@ void setup() {
 
   // Initialise display
   displayPtr = new Display(
-    DISPLAY_REFRESH_RATE,
     [](void)->void{displayPtr->refreshDisplay();},
     crankSensorPtr
   );
@@ -43,5 +42,6 @@ void setup() {
 void loop() {
   //todo intended to be a timer but it broke the display, investigate why...
   displayPtr->refreshDisplay();
-  delay(DISPLAY_REFRESH_RATE);
+  delay(DISPLAY_REFRESH_DELAY);
+//  Serial.println(crankSensorPtr->instantRpm());
 }

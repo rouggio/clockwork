@@ -30,17 +30,21 @@ void CrankSensor::sensorCallback() {
   
   // time distance since the last transition
   unsigned long currentDuration = pulseInstant - lastSeenToothTime;
-
+  
   // approximated duration in comparison to other tooth-tooth durations
-  int durationFactor = durationComparison(currentDuration, lastObservedDuration, 1);
+  boolean isGap = gapBridged(currentDuration, lastObservedDuration);
 
-  if (durationFactor == 1) {
+  if (!isGap) {
 
     // current duration looks like one simple tooth duration, increase index
     lastSeenToothIndex++;
 
-  } else if (durationFactor == TEETH_MISSING + 1) {
+  } else {
 
+    if (lastSeenToothIndex != TEETH_PRESENT - TEETH_MISSING) {
+      Serial.println(lastSeenToothIndex);
+    }
+    
     // current duration looks like missing teeth gap duration, this denotes a completed revolution
 
     // set current tooth to zero
@@ -57,42 +61,28 @@ void CrankSensor::sensorCallback() {
   // store last known tooth - tooth duration and instant
   lastObservedDuration = currentDuration;
   lastSeenToothTime = pulseInstant;
-  
+
 }
 
-int CrankSensor::durationComparison(unsigned long newDuration, unsigned long referenceDuration, unsigned int factor) {
+boolean CrankSensor::gapBridged(unsigned long newDuration, unsigned long referenceDuration) {
 
-  if (newDuration <= referenceDuration * factor) {
-
-    // the new duration is smaller than reference, return factor
-    return factor;
-    
-  } else if (newDuration <= referenceDuration * factor * DURATION_COMPARISON_FACTOR) {
+  if (newDuration <= referenceDuration || newDuration <= referenceDuration * DURATION_COMPARISON_FACTOR) {
 
     // within upper bound tolerance, return factor
-    return factor;
+    return false;
   
   } else {
 
-    // recurse with an increased factor, that is try if we fit within boundaries of one additional gear position
-    return durationComparison(newDuration, referenceDuration, factor + 1);
+    // time exceeded, must have passed the gap
+    return true;
     
   }
 
 }
 
-unsigned long CrankSensor::instantRpm() {
-
-  if (micros() - lastSeenToothTime > MAX_TOOTH_WAIT_TIME) {
-    
-    // too long since last tooth, engine is not running
-    return 0L;
-    
-  } else {
+float CrankSensor::instantRpm() {
 
     // calculate rpm 
-    return (long) ONE_MINUTE_IN_MICROS / lastRevDuration;
-
-  }
-
+    return ONE_MINUTE_IN_MICROS / lastRevDuration;
+//    return lastRevDuration;
 }

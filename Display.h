@@ -19,7 +19,7 @@ class Display {
     CrankSensor * crankSensorPtr;
 
   public:
-    Display(unsigned long, void (*), CrankSensor*);
+    Display(void (*), CrankSensor*);
     void refreshDisplay();
 };
 
